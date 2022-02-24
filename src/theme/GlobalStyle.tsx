@@ -1,6 +1,11 @@
 import { createGlobalStyle } from 'styled-components';
+import { colors } from './colors';
 
 export const GlobalStyles = createGlobalStyle`
+  :root {
+    color-scheme: normal!important;
+  }
+  
   html {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -17,6 +22,8 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: inherit;
     padding: 0;
     margin: 0;
+    background-color: ${colors.white};
+    color: ${colors.text}
   }
 
   .sr-only {
@@ -38,7 +45,11 @@ export const GlobalStyles = createGlobalStyle`
     display: flex;
     flex-direction: column;
   }
-
+  
+  input {
+    border: solid 1px;
+  }
+  
   button {
     border: none;
     background: none;

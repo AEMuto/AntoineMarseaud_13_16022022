@@ -1,9 +1,5 @@
 import { StyledMain } from './container/StyledMain';
 
 export const User = () => {
-  return (
-    <StyledMain>
-
-    </StyledMain>
-  )
-}
+  return <StyledMain background={true}>User</StyledMain>;
+};

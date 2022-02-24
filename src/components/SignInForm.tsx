@@ -1,29 +1,51 @@
-import { Dispatch, FormEvent, SetStateAction } from 'react';
+import React, {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { colors } from '../theme/colors';
 
+import { loginError } from '../services/useLogin';
+
 type SignInFormProps = {
-  name: string;
+  email: string;
   password: string;
   isChecked: boolean;
-  setName: Dispatch<SetStateAction<string>>;
+  setEmail: Dispatch<SetStateAction<string>>;
   setPassword: Dispatch<SetStateAction<string>>;
   toggleChecked: Dispatch<SetStateAction<boolean>>;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  error: loginError | null;
+  isLoading: boolean;
 };
 
 export const SignInForm = (props: SignInFormProps) => {
   const {
-    name,
+    email,
     password,
     isChecked,
-    setName,
+    setEmail,
     setPassword,
     toggleChecked,
     handleSubmit,
+    error,
+    isLoading,
   } = props;
+
+  const [formError, setFormError] = useState(error);
+
+  useEffect(() => {
+    setFormError(error);
+  }, [error]);
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setFormError(null);
+  };
 
   return (
     <SignInContainer>
@@ -37,9 +59,15 @@ export const SignInForm = (props: SignInFormProps) => {
           <input
             type="text"
             id="username"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            className={formError?.for === 'email' ? 'error' : ''}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required={true}
+            onFocus={handleFocus}
           />
+          <p className="error-message">
+            {formError?.for === 'email' ? error?.message : ''}
+          </p>
         </div>
 
         <div className="input-wrapper">
@@ -47,9 +75,15 @@ export const SignInForm = (props: SignInFormProps) => {
           <input
             type="password"
             id="password"
+            className={formError?.for === 'password' ? 'error' : ''}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required={true}
+            onFocus={handleFocus}
           />
+          <p className="error-message">
+            {formError?.for === 'password' ? error?.message : ''}
+          </p>
         </div>
 
         <div className="input-remember">
@@ -79,11 +113,23 @@ const SignInContainer = styled.section`
 
   h1 {
     font-size: 1.5rem;
-    margin: 1.2rem 0;
+    margin: 1.4rem 0 1.6rem 0;
+  }
+
+  .error-message {
+    color: red;
+    height: 0.5rem;
+    margin: 0.5rem 0;
+  }
+
+  input.error {
+    color: red;
+    border-color: red;
   }
 
   .input-remember {
     display: flex;
+    align-items: center;
   }
 
   .input-remember label {
@@ -94,7 +140,7 @@ const SignInContainer = styled.section`
     display: flex;
     flex-direction: column;
     text-align: left;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
   }
 
   .input-wrapper label {
