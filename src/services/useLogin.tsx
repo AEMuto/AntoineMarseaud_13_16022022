@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import axios, { Axios, AxiosError, AxiosRequestConfig } from 'axios';
+import wait from '../utils/wait';
 
 const API = import.meta.env.VITE_API;
 const ENDPOINT = `${API}login`;
@@ -10,11 +11,19 @@ type loginInfo = {
 };
 
 export type loginError = {
-  ['for']: 'email' | 'password' | 'unknow';
-  ['message']: string;
+  email?: string;
+  password?: string;
+  other?: string;
 };
 
-export const useLogin = ({ email, password }: loginInfo) => {
+type loginReturnValues = [
+  boolean,
+  string,
+  loginError | null,
+  Dispatch<SetStateAction<loginError | null>>,
+];
+
+export const useLogin = ({ email, password }: loginInfo): loginReturnValues => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<loginError | null>(null);
   const [token, setToken] = useState('');
@@ -44,15 +53,16 @@ export const useLogin = ({ email, password }: loginInfo) => {
         console.log(response);
         // @ts-ignore
         setToken(response);
-      } catch (e) {
-        const error = e as AxiosError;
+      } catch (err) {
+        const error = err as AxiosError;
         //console.log(error.response);
+        await wait(250);
         if (error.response?.data.message.includes('User')) {
-          setError({ for: 'email', message: 'Invalid Username' });
+          setError({ email: 'Invalid Username' });
         } else if (error.response?.data.message.includes('Password')) {
-          setError({ for: 'password', message: 'Invalid Password' });
+          setError({ password: 'Invalid Password' });
         } else {
-          setError({ for: 'unknow', message: `${error.response?.statusText}` });
+          setError({ other: `${error.response?.statusText}` });
         }
       } finally {
         setIsLoading(false);
@@ -61,5 +71,5 @@ export const useLogin = ({ email, password }: loginInfo) => {
 
     getToken();
   }, [email, password]);
-  return { isLoading, token, error };
+  return [isLoading, token, error, setError];
 };

@@ -22,7 +22,7 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: inherit;
     padding: 0;
     margin: 0;
-    background-color: ${colors.white};
+    
     color: ${colors.text}
   }
 

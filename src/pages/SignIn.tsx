@@ -1,7 +1,8 @@
 import { StyledMain } from './container/StyledMain';
 import { SignInForm } from '../components/SignInForm';
 import { FormEvent, useEffect, useState } from 'react';
-import { useLogin } from '../services/useLogin';
+import { loginError, useLogin } from '../services/useLogin';
+import { useNavigate } from 'react-router-dom';
 
 export const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -9,17 +10,30 @@ export const SignIn = () => {
   const [isChecked, toggleChecked] = useState(false);
   const [payload, setPayload] = useState({ email: '', password: '' });
 
-  const { isLoading, token, error } = useLogin(payload);
+  const [isLoading, token, error, setError] = useLogin(payload);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    //console.log(error);
-  }, [error]);
+    // store token to store
+    // navigate to user page
+    if (token) navigate('/profile');
+  }, [token]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email && password) {
-      setPayload({ email: email, password: password });
+    const errors: loginError = {};
+    if (!email) {
+      errors.email = 'This field is required';
+      console.log(errors);
     }
+    if (!password) {
+      errors.password = 'This field is required';
+      console.log(errors);
+    }
+    if (email && password) {
+      setPayload({ email, password });
+    }
+    setError({ ...errors });
   };
 
   return (
@@ -34,6 +48,7 @@ export const SignIn = () => {
         handleSubmit={handleSubmit}
         error={error}
         isLoading={isLoading}
+        setError={setError}
       />
     </StyledMain>
   );

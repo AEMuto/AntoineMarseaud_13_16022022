@@ -1,16 +1,11 @@
-import React, {
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
+import React, { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { colors } from '../theme/colors';
 
 import { loginError } from '../services/useLogin';
+import Loader from './Loader';
 
 type SignInFormProps = {
   email: string;
@@ -22,6 +17,7 @@ type SignInFormProps = {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   error: loginError | null;
   isLoading: boolean;
+  setError: Dispatch<SetStateAction<loginError | null>>;
 };
 
 export const SignInForm = (props: SignInFormProps) => {
@@ -34,17 +30,26 @@ export const SignInForm = (props: SignInFormProps) => {
     toggleChecked,
     handleSubmit,
     error,
+    setError,
     isLoading,
   } = props;
 
-  const [formError, setFormError] = useState(error);
+  const handleEmail = (e: ChangeEvent<HTMLInputElement>) => {
+    if (error?.email) {
+      const currentError = error;
+      currentError.email = '';
+      setError({ ...currentError });
+    }
+    setEmail(e.target.value);
+  };
 
-  useEffect(() => {
-    setFormError(error);
-  }, [error]);
-
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    setFormError(null);
+  const handlePassword = (e: ChangeEvent<HTMLInputElement>) => {
+    if (error?.password) {
+      const currentError = error;
+      currentError.password = '';
+      setError({ ...currentError });
+    }
+    setPassword(e.target.value);
   };
 
   return (
@@ -59,15 +64,11 @@ export const SignInForm = (props: SignInFormProps) => {
           <input
             type="text"
             id="username"
-            className={formError?.for === 'email' ? 'error' : ''}
+            className={error?.email ? 'error' : ''}
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required={true}
-            onFocus={handleFocus}
+            onChange={handleEmail}
           />
-          <p className="error-message">
-            {formError?.for === 'email' ? error?.message : ''}
-          </p>
+          <p className="error-message">{error?.email ? error?.email : ''}</p>
         </div>
 
         <div className="input-wrapper">
@@ -75,14 +76,12 @@ export const SignInForm = (props: SignInFormProps) => {
           <input
             type="password"
             id="password"
-            className={formError?.for === 'password' ? 'error' : ''}
+            className={error?.password ? 'error' : ''}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required={true}
-            onFocus={handleFocus}
+            onChange={handlePassword}
           />
           <p className="error-message">
-            {formError?.for === 'password' ? error?.message : ''}
+            {error?.password ? error?.password : ''}
           </p>
         </div>
 
@@ -97,7 +96,7 @@ export const SignInForm = (props: SignInFormProps) => {
         </div>
 
         <button className="sign-in-button" type="submit">
-          Sign In
+          {isLoading ? <Loader color="white" size="21px" /> : 'Sign In'}
         </button>
       </form>
     </SignInContainer>
