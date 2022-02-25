@@ -3,7 +3,6 @@ import axios, { Axios, AxiosError, AxiosRequestConfig } from 'axios';
 import wait from '../utils/wait';
 
 const API = import.meta.env.VITE_API;
-const ENDPOINT = `${API}login`;
 
 type loginInfo = {
   email: string;
@@ -42,7 +41,7 @@ export const useLogin = ({ email, password }: loginInfo): loginReturnValues => {
 
         const config: AxiosRequestConfig = {
           method: 'post',
-          url: ENDPOINT,
+          url: `${API}login`,
           headers: {
             'Content-Type': 'application/json',
           },
@@ -50,13 +49,12 @@ export const useLogin = ({ email, password }: loginInfo): loginReturnValues => {
         };
 
         const response = await axios(config);
-        console.log(response);
-        // @ts-ignore
-        setToken(response);
+        setToken(response.data.body.token);
       } catch (err) {
         const error = err as AxiosError;
-        //console.log(error.response);
+
         await wait(250);
+
         if (error.response?.data.message.includes('User')) {
           setError({ email: 'Invalid Username' });
         } else if (error.response?.data.message.includes('Password')) {
@@ -69,7 +67,26 @@ export const useLogin = ({ email, password }: loginInfo): loginReturnValues => {
       }
     }
 
+    //TODO: Place connectUser in another hook called 'useConnect' ? & finish it.
+    async function connectUser(token: string) {
+      if (!token) return;
+      try {
+        const config:AxiosRequestConfig = {
+          method: 'post',
+          url: `${API}profile`,
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        };
+        const response = await axios(config)
+
+      } catch {
+      } finally {
+      }
+    }
+
     getToken();
   }, [email, password]);
+
   return [isLoading, token, error, setError];
 };

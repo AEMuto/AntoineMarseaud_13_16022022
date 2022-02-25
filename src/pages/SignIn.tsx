@@ -3,20 +3,26 @@ import { SignInForm } from '../components/SignInForm';
 import { FormEvent, useEffect, useState } from 'react';
 import { loginError, useLogin } from '../services/useLogin';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../hooks';
+import { signIn } from '../store/userSlice';
 
 export const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isChecked, toggleChecked] = useState(false);
   const [payload, setPayload] = useState({ email: '', password: '' });
-
   const [isLoading, token, error, setError] = useLogin(payload);
+  const dispatch = useAppDispatch()
   const navigate = useNavigate();
 
   useEffect(() => {
     // store token to store
     // navigate to user page
-    if (token) navigate('/profile');
+    if (token) {
+      console.log(token)
+      dispatch(signIn({ token }))
+      //navigate('/profile');
+    }
   }, [token]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
