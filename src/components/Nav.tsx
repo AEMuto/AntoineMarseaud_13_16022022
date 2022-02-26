@@ -6,17 +6,19 @@ import logo from '../assets/logo.svg';
 import { colors } from '../theme/colors';
 
 export const Nav = () => {
+  //TODO: assert user auth status in order to render the component correctly
+  // the link to '/sign-in' should be replaced by a link to '/profile' and a
+  // link/button ? to logout and return to '/' should be added
   return (
     <StyledNav>
-      <h1 className='sr-only'>Argent Bank</h1>
-      <StyledLink to='/'>
-        <img src={logo} alt='Argent Bank Logo' />
+      <h1 className="sr-only">Argent Bank</h1>
+      <StyledLink to="/">
+        <img src={logo} alt="Argent Bank Logo" />
       </StyledLink>
-      <Link to='/sign-in'>
+      <Link to="/sign-in">
         <FontAwesomeIcon icon={faCircleUser} />
         <span>Sign In</span>
       </Link>
-
     </StyledNav>
   );
 };
@@ -30,7 +32,7 @@ const StyledNav = styled.nav`
 
   a {
     font-weight: 700;
-    color: ${colors.text}
+    color: ${colors.text};
   }
 
   a:hover {
@@ -50,4 +52,4 @@ const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
