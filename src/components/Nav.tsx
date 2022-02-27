@@ -1,24 +1,42 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCircleUser,
+  faRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import { colors } from '../theme/colors';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { logout } from '../store/authSlice';
 
 export const Nav = () => {
-  //TODO: assert user auth status in order to render the component correctly
-  // the link to '/sign-in' should be replaced by a link to '/profile' and a
-  // link/button ? to logout and return to '/' should be added
+  const { isConnected } = useAppSelector((state) => state.auth);
+  const { firstName } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
   return (
     <StyledNav>
       <h1 className="sr-only">Argent Bank</h1>
       <StyledLink to="/">
         <img src={logo} alt="Argent Bank Logo" />
       </StyledLink>
-      <Link to="/sign-in">
-        <FontAwesomeIcon icon={faCircleUser} />
-        <span>Sign In</span>
-      </Link>
+      {isConnected ? (
+        <div className="linksContainer">
+          <Link to="/profile">
+            <FontAwesomeIcon icon={faCircleUser} />
+            <span>{firstName}</span>
+          </Link>
+          <Link to="/" onClick={() => dispatch(logout())}>
+            <FontAwesomeIcon icon={faRightFromBracket} />
+            <span>Sign Out</span>
+          </Link>
+        </div>
+      ) : (
+        <Link to="/login">
+          <FontAwesomeIcon icon={faCircleUser} />
+          <span>Sign In</span>
+        </Link>
+      )}
     </StyledNav>
   );
 };
@@ -38,9 +56,13 @@ const StyledNav = styled.nav`
   a:hover {
     text-decoration: underline;
   }
-
+.linksContainer {
+  a:nth-of-type(1) {
+    margin-right: 1rem;
+  }
+}
   span {
-    margin-left: 0.5rem;
+    margin-left: 0.25rem;
   }
 
   img {

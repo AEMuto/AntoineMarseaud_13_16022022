@@ -1,6 +1,6 @@
 import { StyledMain } from './container/StyledMain';
 
-export const SignUp = () => {
+export const Register = () => {
   return (
     <StyledMain>
 

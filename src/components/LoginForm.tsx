@@ -3,55 +3,30 @@ import styled from 'styled-components';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { colors } from '../theme/colors';
-
-import { loginError } from '../services/useLogin';
 import Loader from './Loader';
+import { errorState } from '../store/authSlice';
+import { loginPayload } from '../store/authThunks';
 
-type SignInFormProps = {
-  email: string;
-  password: string;
-  isChecked: boolean;
-  setEmail: Dispatch<SetStateAction<string>>;
-  setPassword: Dispatch<SetStateAction<string>>;
+export type loginFormProps = loginPayload & {
   toggleChecked: Dispatch<SetStateAction<boolean>>;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  error: loginError | null;
-  isLoading: boolean;
-  setError: Dispatch<SetStateAction<loginError | null>>;
+  handleEmail: (e: ChangeEvent<HTMLInputElement>) => void;
+  handlePassword: (e: ChangeEvent<HTMLInputElement>) => void;
+  error: errorState;
+  isLoading:boolean
 };
 
-export const SignInForm = (props: SignInFormProps) => {
-  const {
-    email,
-    password,
-    isChecked,
-    setEmail,
-    setPassword,
-    toggleChecked,
-    handleSubmit,
-    error,
-    setError,
-    isLoading,
-  } = props;
-
-  const handleEmail = (e: ChangeEvent<HTMLInputElement>) => {
-    if (error?.email) {
-      const currentError = error;
-      currentError.email = '';
-      setError({ ...currentError });
-    }
-    setEmail(e.target.value);
-  };
-
-  const handlePassword = (e: ChangeEvent<HTMLInputElement>) => {
-    if (error?.password) {
-      const currentError = error;
-      currentError.password = '';
-      setError({ ...currentError });
-    }
-    setPassword(e.target.value);
-  };
-
+export const LoginForm = ({
+  email,
+  password,
+  isChecked,
+  handleEmail,
+  handlePassword,
+  toggleChecked,
+  handleSubmit,
+  error,
+  isLoading,
+}:loginFormProps) => {
   return (
     <SignInContainer>
       <FontAwesomeIcon icon={faCircleUser} size="2x" />

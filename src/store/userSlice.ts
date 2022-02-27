@@ -1,21 +1,13 @@
-import {
-  createAction,
-  createSlice,
-  PayloadAction,
-  PrepareAction,
-} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchUserProfile } from './authThunks';
 
-interface UserState {
-  connected: boolean;
-  token: string;
+export type userState = {
   email: string;
   firstName: string;
   lastName: string;
-}
+};
 
-const initialState: UserState = {
-  connected: false,
-  token: '',
+const initialState: userState = {
   email: '',
   firstName: '',
   lastName: '',
@@ -24,36 +16,13 @@ const initialState: UserState = {
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    signIn: (state, action: PayloadAction<{ token: string }>) => {
-      state.token = action.payload.token;
-    },
-    connect: (
-      state,
-      action: PayloadAction<{
-        email: string;
-        firstName: string;
-        lastName: string;
-      }>,
-    ) => {
-      state.connected = true;
-      state.email = action.payload.email;
-      state.firstName = action.payload.firstName;
-      state.lastName = action.payload.lastName;
-    },
-    logout: () => {
-      return initialState;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
+      const { email, firstName, lastName } = action.payload;
+      state.email = email;
+      state.firstName = firstName;
+      state.lastName = lastName;
+    });
   },
 });
-
-export const {signIn, connect, logout} = userSlice.actions
-
-// export const connectUser = createAction(
-//   'user/connect',
-//   (connected: string, email: string, firstName: string, lastName: string) => {
-//     return {
-//       payload: { connected, email, firstName, lastName },
-//     };
-//   },
-// );

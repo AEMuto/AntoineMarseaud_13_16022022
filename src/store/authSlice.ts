@@ -1,17 +1,31 @@
-//TODO: All my logic for authentication should be present there
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchUserProfile, login } from './authThunks';
+import setLSToken from '../utils/setLSToken';
+import getLSToken from '../utils/getLSToken';
+import removeLSToken from '../utils/removeLSToken';
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+export type errorState = {
+  email?: string;
+  password?: string;
+  other?: string;
+};
 
-interface AuthState {
-  isLoading: boolean
-  connected: boolean;
+export type authState = {
+  isLoading: boolean;
+  isConnected: boolean;
   token: string;
-}
+  error: errorState;
+};
 
-const initialState: AuthState = {
+const initialState: authState = {
   isLoading: false,
-  connected: false,
+  isConnected: false,
   token: '',
+  error: {
+    email: '',
+    password: '',
+    other: '',
+  },
 };
 
 export const authSlice = createSlice({
@@ -19,8 +33,47 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     logout: () => {
+      if (getLSToken()) removeLSToken();
       return initialState;
     },
+    setEmailError: (state, action) => {
+      state.error.email = action.payload.email;
+    },
+    setPasswordError: (state, action) => {
+      state.error.password = action.payload.password;
+    },
+    setOtherError: (state, action) => {
+      state.error.other = action.payload.other;
+    },
   },
-  extraReducers: {}
+  extraReducers: (builder) => {
+    builder.addCase(login.fulfilled, (state, action) => {
+      const { token } = action.payload;
+      if (action.payload.storeTokenToLS) setLSToken(token);
+      state.token = token;
+      state.isLoading = false;
+    });
+    builder.addCase(login.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(login.rejected, (state, action) => {
+      console.log(action.payload);
+      if (action.payload) state.error = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(fetchUserProfile.fulfilled, (state) => {
+      state.isConnected = true;
+      state.isLoading = false;
+    });
+    builder.addCase(fetchUserProfile.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchUserProfile.rejected, (state, action) => {
+      if (action.payload) state.error = action.payload;
+      state.isLoading = false;
+    });
+  },
 });
+
+export const { logout, setEmailError, setPasswordError, setOtherError } =
+  authSlice.actions;
