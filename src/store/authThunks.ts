@@ -19,7 +19,7 @@ type customError = {
   rejectValue: errorState;
 };
 
-export const login = createAsyncThunk<
+export const fetchToken = createAsyncThunk<
   loginReturnValues,
   loginPayload,
   customError

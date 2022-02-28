@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import bgImage from '../assets/bank-tree.webp';
+import bgImage from '../../assets/bank-tree.webp';
 import { nanoid } from '@reduxjs/toolkit';
 
 type HeroProps = {
@@ -8,7 +8,7 @@ type HeroProps = {
   text: string
 }
 
-export const Hero = ({title, subtitles, text}: HeroProps) => {
+export const HomeHero = ({title, subtitles, text}: HeroProps) => {
   return (
     <HeroContainer>
       <HeroContent>

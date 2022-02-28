@@ -1,10 +1,10 @@
 import { StyledMain } from './container/StyledMain';
-import { LoginForm } from '../components/LoginForm';
+import { LoginForm } from '../components/Login/LoginForm';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { setEmailError, setPasswordError } from '../store/authSlice';
-import { fetchUserProfile, login } from '../store/authThunks';
+import { fetchUserProfile, fetchToken } from '../store/authThunks';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -32,7 +32,7 @@ export const Login = () => {
       dispatch(setPasswordError({ password: 'This field is required' }));
     }
     if (email && password) {
-      dispatch(login({ email, password, isChecked }));
+      dispatch(fetchToken({ email, password, isChecked }));
     }
   };
 

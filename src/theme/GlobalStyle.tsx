@@ -22,8 +22,6 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: inherit;
     padding: 0;
     margin: 0;
-    
-    color: ${colors.text}
   }
 
   .sr-only {
@@ -51,8 +49,8 @@ export const GlobalStyles = createGlobalStyle`
   }
   
   button {
-    border: none;
-    background: none;
+    //border: none;
+    //background: none;
     cursor: pointer;
 
     &:disabled,

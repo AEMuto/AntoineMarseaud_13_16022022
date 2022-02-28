@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { nanoid } from '@reduxjs/toolkit';
-import { colors } from '../theme/colors';
+import { colors } from '../../theme/colors';
 
 type FeaturesProp = { content: FeatureProp[] }
 
@@ -10,7 +10,7 @@ type FeatureProp = {
   text: string
 }
 
-export const Features = ({ content }: FeaturesProp) => {
+export const HomeFeatures = ({ content }: FeaturesProp) => {
   return (
     <FeaturesContainer>
       <h2 className='sr-only'>Features</h2>

@@ -1,6 +1,6 @@
 import { StyledMain } from './container/StyledMain';
-import { Hero } from '../components/Hero';
-import { Features } from '../components/Features';
+import { HomeHero } from '../components/Home/HomeHero';
+import { HomeFeatures } from '../components/Home/HomeFeatures';
 import chatIcon from '../assets/icon-chat.svg'
 import moneyIcon from '../assets/icon-money.svg'
 import securityIcon from '../assets/icon-security.svg'
@@ -32,8 +32,8 @@ const featuresContent = [
 export const Home = () => {
   return (
     <StyledMain>
-      <Hero {...heroContent} />
-      <Features content={featuresContent} />
+      <HomeHero {...heroContent} />
+      <HomeFeatures content={featuresContent} />
     </StyledMain>
   );
 };

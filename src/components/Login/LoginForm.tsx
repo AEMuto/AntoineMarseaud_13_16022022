@@ -2,10 +2,10 @@ import React, { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { colors } from '../theme/colors';
-import Loader from './Loader';
-import { errorState } from '../store/authSlice';
-import { loginPayload } from '../store/authThunks';
+import { colors } from '../../theme/colors';
+import Loader from '../Loader';
+import { errorState } from '../../store/authSlice';
+import { loginPayload } from '../../store/authThunks';
 
 export type loginFormProps = loginPayload & {
   toggleChecked: Dispatch<SetStateAction<boolean>>;
