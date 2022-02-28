@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchUserProfile, fetchToken } from './authThunks';
 import setLSToken from '../utils/setLSToken';
 import getLSToken from '../utils/getLSToken';
@@ -37,6 +37,9 @@ export const authSlice = createSlice({
     logout: () => {
       if (getLSToken()) removeLSToken();
       return initialState;
+    },
+    setToken:(state,action:PayloadAction<string>) => {
+      state.token = action.payload
     },
     setEmailError: (state, action) => {
       state.error.email = action.payload.email;
@@ -77,5 +80,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, setEmailError, setPasswordError, setOtherError } =
+export const { logout, setToken, setEmailError, setPasswordError, setOtherError } =
   authSlice.actions;

@@ -17,11 +17,18 @@ export const Login = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  // The user is already connected, we send him to his profile
   useEffect(() => {
-    if (!token) return
-    dispatch(fetchUserProfile({token}))
-    navigate('/profile')
-  },[token])
+    if (isConnected) navigate('/profile');
+  }, []);
+
+  // There is a token in the store, then we should request the user's info
+  // and send him to his profile page
+  useEffect(() => {
+    if (!token) return;
+    dispatch(fetchUserProfile({ token }));
+    navigate('/profile');
+  }, [token]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
