@@ -1,7 +1,7 @@
 import { StyledMain } from './container/StyledMain';
 import { LoginForm } from '../components/Login/LoginForm';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { setEmailError, setPasswordError } from '../store/authSlice';
 import { fetchUserProfile, fetchToken } from '../store/authThunks';
@@ -15,19 +15,11 @@ export const Login = () => {
   );
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  // The user is already connected, we send him to his profile
-  useEffect(() => {
-    if (isConnected) navigate('/profile');
-  }, []);
 
   // There is a token in the store, then we should request the user's info
-  // and send him to his profile page
   useEffect(() => {
     if (!token) return;
     dispatch(fetchUserProfile({ token }));
-    navigate('/profile');
   }, [token]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -56,6 +48,10 @@ export const Login = () => {
     }
     setPassword(e.target.value);
   };
+
+  if (isConnected) {
+    return <Navigate to="/profile" />;
+  }
 
   return (
     <StyledMain background={true}>

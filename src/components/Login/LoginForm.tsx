@@ -33,7 +33,7 @@ export const LoginForm = ({
 
       <h1>Sign In</h1>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autoComplete="off">
         <div className="input-wrapper">
           <label htmlFor="username">Username</label>
           <input

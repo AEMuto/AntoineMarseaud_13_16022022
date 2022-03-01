@@ -1,10 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchUserProfile } from './authThunks';
+import { updateUserProfile } from './userThunk';
 
-export type userState = {
-  email: string;
+export type userProfile = {
   firstName: string;
   lastName: string;
+}
+
+export type userState = userProfile & {
+  email: string;
 };
 
 const initialState: userState = {
@@ -24,5 +28,10 @@ export const userSlice = createSlice({
       state.firstName = firstName;
       state.lastName = lastName;
     });
+    builder.addCase(updateUserProfile.fulfilled, (state,action) => {
+      const {firstName, lastName} = action.payload;
+      state.firstName = firstName
+      state.lastName = lastName
+    })
   },
 });

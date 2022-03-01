@@ -3,8 +3,9 @@ import { fetchUserProfile, fetchToken } from './authThunks';
 import setLSToken from '../utils/setLSToken';
 import getLSToken from '../utils/getLSToken';
 import removeLSToken from '../utils/removeLSToken';
+import { updateUserProfile } from './userThunk';
 
-//TODO: displace error state in its own slice
+//TODO: displace error state in its own slice ?
 
 export type errorState = {
   email?: string;
@@ -38,8 +39,8 @@ export const authSlice = createSlice({
       if (getLSToken()) removeLSToken();
       return initialState;
     },
-    setToken:(state,action:PayloadAction<string>) => {
-      state.token = action.payload
+    setToken: (state, action: PayloadAction<string>) => {
+      state.token = action.payload;
     },
     setEmailError: (state, action) => {
       state.error.email = action.payload.email;
@@ -77,8 +78,23 @@ export const authSlice = createSlice({
       if (action.payload) state.error = action.payload;
       state.isLoading = false;
     });
+    builder.addCase(updateUserProfile.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateUserProfile.fulfilled, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(updateUserProfile.rejected, (state, action) => {
+      if (action.payload) state.error = action.payload;
+      state.isLoading = false;
+    });
   },
 });
 
-export const { logout, setToken, setEmailError, setPasswordError, setOtherError } =
-  authSlice.actions;
+export const {
+  logout,
+  setToken,
+  setEmailError,
+  setPasswordError,
+  setOtherError,
+} = authSlice.actions;

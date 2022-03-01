@@ -15,7 +15,7 @@ type loginReturnValues = {
   storeTokenToLS: boolean;
 };
 
-type customError = {
+export type customError = {
   rejectValue: errorState;
 };
 
