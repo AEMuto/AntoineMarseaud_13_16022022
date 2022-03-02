@@ -5,7 +5,6 @@ import getLSToken from '../utils/getLSToken';
 import removeLSToken from '../utils/removeLSToken';
 import { updateUserProfile } from './userThunk';
 
-//TODO: displace error state in its own slice ?
 
 export type errorState = {
   email?: string;

@@ -6,6 +6,8 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { setEmailError, setPasswordError } from '../store/authSlice';
 import { fetchUserProfile, fetchToken } from '../store/authThunks';
 
+//TODO: Make the password visibility toggle on click of an eye icon
+
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
