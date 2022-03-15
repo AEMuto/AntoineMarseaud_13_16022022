@@ -38,7 +38,7 @@ export const fetchToken = createAsyncThunk<
     }
     if (error.response.data.message.includes('User')) {
       console.log(error.response);
-      return rejectWithValue({ email: 'Invalid Username' });
+      return rejectWithValue({ email: 'User not found' });
     } else if (error.response.data.message.includes('Password')) {
       return rejectWithValue({ password: 'Invalid Password' });
     } else {

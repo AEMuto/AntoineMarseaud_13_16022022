@@ -2,15 +2,15 @@ import styled from 'styled-components';
 import { useAppSelector } from '../../hooks';
 import { colors } from '../../theme/colors';
 import Button from '../Button';
-import React, { Dispatch, FormEvent, SetStateAction } from 'react';
+import React, { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 import { errorState } from '../../store/authSlice';
 
 type ProfileHeaderProps = {
   isEditing: boolean;
   toggleEditing: Dispatch<SetStateAction<boolean>>;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  setFormFirstName: Dispatch<SetStateAction<string>>;
-  setFormLastName: Dispatch<SetStateAction<string>>;
+  handleFirstName: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleLastName: (e: ChangeEvent<HTMLInputElement>) => void;
   error: errorState;
 };
 
@@ -18,8 +18,8 @@ const ProfileHeader = ({
   isEditing,
   toggleEditing,
   handleSubmit,
-  setFormFirstName,
-  setFormLastName,
+  handleFirstName,
+  handleLastName,
   error
 }: ProfileHeaderProps) => {
   const { firstName, lastName } = useAppSelector((state) => state.user);
@@ -34,7 +34,7 @@ const ProfileHeader = ({
               <input
               type='text'
               placeholder={firstName}
-              onChange={(e) => setFormFirstName(e.target.value)}
+              onChange={handleFirstName}
             />
               <p className='error-message'>
                 {error.firstName ? error.firstName : ''}
@@ -44,7 +44,7 @@ const ProfileHeader = ({
               <input
               type='text'
               placeholder={lastName}
-              onChange={(e) => setFormLastName(e.target.value)}
+              onChange={handleLastName}
             />
               <p className='error-message'>
                 {error.lastName ? error.lastName : ''}

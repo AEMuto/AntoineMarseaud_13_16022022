@@ -5,8 +5,7 @@ import { Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { setEmailError, setPasswordError } from '../store/authSlice';
 import { fetchUserProfile, fetchToken } from '../store/authThunks';
-
-//TODO: Make the password visibility toggle on click of an eye icon
+import validateInput from '../utils/validateInput';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -26,13 +25,17 @@ export const Login = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email) {
-      dispatch(setEmailError({ email: 'This field is required' }));
+    const emailValidation = validateInput(email, 'email')
+
+    if (!emailValidation.valid) {
+      dispatch(setEmailError({ email: emailValidation.message }));
     }
+
     if (!password) {
       dispatch(setPasswordError({ password: 'This field is required' }));
     }
-    if (email && password) {
+
+    if (emailValidation.valid && password) {
       dispatch(fetchToken({ email, password, isChecked }));
     }
   };

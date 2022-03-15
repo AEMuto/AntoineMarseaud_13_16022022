@@ -1,6 +1,6 @@
-import React, { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
+import React, { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
-import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import { faCircleUser, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { colors } from '../../theme/colors';
 import Loader from '../Loader';
@@ -13,9 +13,26 @@ export type loginFormProps = loginPayload & {
   handleEmail: (e: ChangeEvent<HTMLInputElement>) => void;
   handlePassword: (e: ChangeEvent<HTMLInputElement>) => void;
   error: errorState;
-  isLoading:boolean
+  isLoading: boolean
 };
 
+/**
+ * The LoginForm component. It's main purpose is to render the jsx and stylize it.
+ * The submission logic is handled by its parent, the Login page.
+ * It's a way to apply the Separation of Concerns principle.
+ * Maybe it's not that much efficient, but I find it easier to look
+ * just at the Login page when there is a login problem.
+ * @param email
+ * @param password
+ * @param isChecked
+ * @param handleEmail
+ * @param handlePassword
+ * @param toggleChecked
+ * @param handleSubmit
+ * @param error
+ * @param isLoading
+ * @constructor
+ */
 export const LoginForm = ({
   email,
   password,
@@ -26,52 +43,64 @@ export const LoginForm = ({
   handleSubmit,
   error,
   isLoading,
-}:loginFormProps) => {
+}: loginFormProps) => {
+  // We have delegated most of the logic of this component to its parent
+  // but for the case of toggling the password visibility we handle it
+  // there, as it has no effect on the submission.
+  const [passwordVisible, togglePassword] = useState(false);
   return (
     <SignInContainer>
-      <FontAwesomeIcon icon={faCircleUser} size="2x" />
+      <FontAwesomeIcon icon={faCircleUser} size='2x' />
 
       <h1>Sign In</h1>
 
-      <form onSubmit={handleSubmit} autoComplete="off">
-        <div className="input-wrapper">
-          <label htmlFor="username">Username</label>
+      <form onSubmit={handleSubmit} autoComplete='off'>
+        <div className='input-wrapper'>
+          <label htmlFor='username'>Username</label>
           <input
-            type="text"
-            id="username"
-            className={error?.email ? 'error' : ''}
+            type='text'
+            id='username'
+            className={error?.email ? 'error' : ''} // Change the border to red if there is an error
             value={email}
             onChange={handleEmail}
           />
-          <p className="error-message">{error?.email ? error?.email : ''}</p>
+          {/* Conditionally render the error message */}
+          <p className='error-message'>{error?.email ? error?.email : ''}</p>
         </div>
 
-        <div className="input-wrapper">
-          <label htmlFor="password">Password</label>
+        <div className='input-wrapper'>
+          <label htmlFor='password'>Password</label>
           <input
-            type="password"
-            id="password"
+            type={passwordVisible ? 'text' : 'password'} // Here we change the type of the input to make the password visible
+            id='password'
             className={error?.password ? 'error' : ''}
             value={password}
             onChange={handlePassword}
           />
-          <p className="error-message">
+          <div className='icon-wrapper'>
+            <FontAwesomeIcon
+              icon={passwordVisible ? faEye : faEyeSlash} // We change the icon depending on the pwd visibility
+              onClick={() => togglePassword(!passwordVisible)} // It's there that we toggle the boolean value of passwordVisible
+              style={{ cursor: 'pointer' }}
+            />
+          </div>
+          <p className='error-message'>
             {error?.password ? error?.password : ''}
           </p>
         </div>
 
-        <div className="input-remember">
+        <div className='input-remember'>
           <input
-            type="checkbox"
-            id="remember-me"
+            type='checkbox'
+            id='remember-me'
             checked={isChecked}
             onChange={(e) => toggleChecked(e.target.checked)}
           />
-          <label htmlFor="remember-me">Remember me</label>
+          <label htmlFor='remember-me'>Remember me</label>
         </div>
 
-        <button className="sign-in-button" type="submit">
-          {isLoading ? <Loader color="white" size="21px" /> : 'Sign In'}
+        <button className='sign-in-button' type='submit'>
+          {isLoading ? <Loader color='white' size='21px' /> : 'Sign In'}
         </button>
       </form>
     </SignInContainer>
@@ -89,7 +118,7 @@ const SignInContainer = styled.section`
     font-size: 1.5rem;
     margin: 1.4rem 0 1.6rem 0;
   }
-  
+
   .input-remember {
     display: flex;
     align-items: center;
@@ -104,6 +133,7 @@ const SignInContainer = styled.section`
     flex-direction: column;
     text-align: left;
     margin-bottom: 0.8rem;
+    position: relative;
   }
 
   .input-wrapper label {
@@ -113,6 +143,18 @@ const SignInContainer = styled.section`
   .input-wrapper input {
     padding: 5px;
     font-size: 1.2rem;
+  }
+
+  .icon-wrapper {
+    position: absolute;
+    right: 0.5rem;
+    top: 18px;
+    height: 34px;
+    width: 34px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .sign-in-button {

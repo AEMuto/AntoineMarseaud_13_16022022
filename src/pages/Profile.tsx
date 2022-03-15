@@ -3,7 +3,7 @@ import { mockAccounts } from '../mock/mockAccounts';
 import ProfileHeader from '../components/Profile/ProfileHeader';
 import ProfileAccount from '../components/Profile/ProfileAccount';
 import { nanoid } from '@reduxjs/toolkit';
-import { FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { updateUserProfile } from '../store/userThunk';
 import { setFirstNameError, setLastNameError } from '../store/authSlice';
@@ -11,6 +11,7 @@ import validateInput from '../utils/validateInput';
 
 export const Profile = () => {
   const { token, error } = useAppSelector((state) => state.auth);
+  const {firstName, lastName} = useAppSelector((state) => state.user)
   const [isEditing, toggleEditing] = useState(false);
   const [formFirstName, setFormFirstName] = useState('');
   const [formLastName, setFormLastName] = useState('');
@@ -18,24 +19,23 @@ export const Profile = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Submit')
-    const firstNameValidation = validateInput(formFirstName, 'name')
-    console.log(firstNameValidation)
-    const lastNameValidation = validateInput(formLastName, 'name')
-    console.log(lastNameValidation)
+    const firstNameValidation = validateInput(formFirstName, 'name');
+    const lastNameValidation = validateInput(formLastName, 'name');
 
     if (!firstNameValidation.valid) {
-      console.log(firstNameValidation.message)
       dispatch(setFirstNameError({ firstName: firstNameValidation.message }));
-      return;
     }
 
     if (!lastNameValidation.valid) {
       dispatch(setLastNameError({ lastName: lastNameValidation.message }));
-      return;
     }
 
-    if (formFirstName && formLastName) {
+    if (formLastName === lastName && formFirstName === firstName) {
+      toggleEditing(false)
+      return
+    }
+
+    if (firstNameValidation.valid && lastNameValidation.valid) {
       dispatch(
         updateUserProfile({
           firstName: formFirstName,
@@ -47,14 +47,28 @@ export const Profile = () => {
     }
   };
 
+  const handleFirstName = (e: ChangeEvent<HTMLInputElement>) => {
+    if (error.firstName) {
+      dispatch(setFirstNameError({ firstName: '' }));
+    }
+    setFormFirstName(e.target.value)
+  };
+
+  const handleLastName = (e: ChangeEvent<HTMLInputElement>) => {
+    if (error.lastName) {
+      dispatch(setLastNameError({ lastName: '' }));
+    }
+    setFormLastName(e.target.value)
+  };
+
   return (
     <StyledMain background={true}>
       <ProfileHeader
         isEditing={isEditing}
         toggleEditing={toggleEditing}
         handleSubmit={handleSubmit}
-        setFormFirstName={setFormFirstName}
-        setFormLastName={setFormLastName}
+        handleFirstName={handleFirstName}
+        handleLastName={handleLastName}
         error={error}
       />
       <h2 className='sr-only'>Accounts</h2>

@@ -9,7 +9,6 @@ const passwordRegexp = new RegExp('^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d
 const emailRegexp = new RegExp('^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$', 'i');
 
 function validateInput(input: string, type: typeParam): returnValue {
-  console.log(input)
   if (!input) {
     return { valid: false, message: `This field is required` };
   }
@@ -21,7 +20,6 @@ function validateInput(input: string, type: typeParam): returnValue {
       }
       return { valid: true, message: 'Correct email' };
     case 'name':
-      console.log(input)
       if (input.match(invalidCharacter)) {
         return { valid: false, message: 'Alphabetic letters only' };
       }
