@@ -89,18 +89,7 @@ const SignInContainer = styled.section`
     font-size: 1.5rem;
     margin: 1.4rem 0 1.6rem 0;
   }
-
-  .error-message {
-    color: red;
-    height: 0.5rem;
-    margin: 0.5rem 0;
-  }
-
-  input.error {
-    color: red;
-    border-color: red;
-  }
-
+  
   .input-remember {
     display: flex;
     align-items: center;

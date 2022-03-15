@@ -67,4 +67,15 @@ export const GlobalStyles = createGlobalStyle`
     list-style: none;
   }
 
+  .error-message {
+    color: red;
+    height: 0.5rem;
+    margin: 0.5rem 0;
+  }
+
+  input.error {
+    color: red;
+    border-color: red;
+  }
+
 `;

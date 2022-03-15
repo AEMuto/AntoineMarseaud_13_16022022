@@ -9,6 +9,8 @@ import { updateUserProfile } from './userThunk';
 export type errorState = {
   email?: string;
   password?: string;
+  lastName?: string;
+  firstName?: string;
   other?: string;
 };
 
@@ -26,6 +28,8 @@ const initialState: authState = {
   error: {
     email: '',
     password: '',
+    firstName: '',
+    lastName: '',
     other: '',
   },
 };
@@ -46,6 +50,12 @@ export const authSlice = createSlice({
     },
     setPasswordError: (state, action) => {
       state.error.password = action.payload.password;
+    },
+    setLastNameError: (state, action) => {
+      state.error.lastName = action.payload.lastName;
+    },
+    setFirstNameError: (state, action) => {
+      state.error.firstName = action.payload.firstName;
     },
     setOtherError: (state, action) => {
       state.error.other = action.payload.other;
@@ -95,5 +105,7 @@ export const {
   setToken,
   setEmailError,
   setPasswordError,
+  setFirstNameError,
+  setLastNameError,
   setOtherError,
 } = authSlice.actions;

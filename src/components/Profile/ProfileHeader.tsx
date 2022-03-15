@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { useAppSelector } from '../../hooks';
 import { colors } from '../../theme/colors';
 import Button from '../Button';
-import { Dispatch, FormEvent, SetStateAction } from 'react';
+import React, { Dispatch, FormEvent, SetStateAction } from 'react';
+import { errorState } from '../../store/authSlice';
 
 type ProfileHeaderProps = {
   isEditing: boolean;
@@ -10,6 +11,7 @@ type ProfileHeaderProps = {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   setFormFirstName: Dispatch<SetStateAction<string>>;
   setFormLastName: Dispatch<SetStateAction<string>>;
+  error: errorState;
 };
 
 const ProfileHeader = ({
@@ -18,6 +20,7 @@ const ProfileHeader = ({
   handleSubmit,
   setFormFirstName,
   setFormLastName,
+  error
 }: ProfileHeaderProps) => {
   const { firstName, lastName } = useAppSelector((state) => state.user);
 
@@ -27,16 +30,26 @@ const ProfileHeader = ({
         <>
           <h1 className="editing">Welcome back</h1>
           <form onSubmit={handleSubmit} autoComplete="off">
-            <input
-              type="text"
+            <div className='input-wrapper'>
+              <input
+              type='text'
               placeholder={firstName}
               onChange={(e) => setFormFirstName(e.target.value)}
             />
-            <input
-              type="text"
+              <p className='error-message'>
+                {error.firstName ? error.firstName : ''}
+              </p>
+            </div>
+            <div className='input-wrapper'>
+              <input
+              type='text'
               placeholder={lastName}
               onChange={(e) => setFormLastName(e.target.value)}
             />
+              <p className='error-message'>
+                {error.lastName ? error.lastName : ''}
+              </p>
+            </div>
           </form>
           <ButtonWrapper>
             <Button
@@ -98,6 +111,12 @@ const StyledHeader = styled.header`
     font-size: 1.2rem;
     width: 100%;
     max-width: 10rem;
+
+  }
+  .input-wrapper {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
     &:nth-of-type(1) {
       margin-right: 1rem;
     }

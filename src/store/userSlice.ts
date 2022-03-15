@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchUserProfile } from './authThunks';
 import { updateUserProfile } from './userThunk';
+import { logout } from './authSlice';
 
 export type userProfile = {
   firstName: string;
@@ -32,6 +33,9 @@ export const userSlice = createSlice({
       const {firstName, lastName} = action.payload;
       state.firstName = firstName
       state.lastName = lastName
+    });
+    builder.addCase(logout, () => {
+      return initialState
     })
   },
 });
