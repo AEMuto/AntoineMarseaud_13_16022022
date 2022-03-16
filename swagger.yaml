@@ -1,3 +1,4 @@
+#TODO: Ajouter une route pour récupérer une transaction unique (uuid) et donc ses détails
 swagger: '2.0'
 info:
   title: Bank Argent API documentation

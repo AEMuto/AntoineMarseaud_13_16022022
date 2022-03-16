@@ -3,6 +3,7 @@ import api from '../services/api';
 import { AxiosError } from 'axios';
 import { errorState } from './authSlice';
 import { userState } from './userSlice';
+import wait from '../utils/wait';
 
 export type loginPayload = {
   email: string;
@@ -27,6 +28,7 @@ export const fetchToken = createAsyncThunk<
   try {
     const { email, password } = payload;
     const response = await api.post('login', { email, password });
+    await wait(250)
     if (payload.isChecked) {
       return { token: response.data.body.token, storeTokenToLS: true };
     }

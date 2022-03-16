@@ -30,6 +30,7 @@ const ProfileHeader = ({
         <>
           <h1 className="editing">Welcome back</h1>
           <form onSubmit={handleSubmit} autoComplete="off">
+            <div className='input-container'>
             <div className='input-wrapper'>
               <input
               type='text'
@@ -50,7 +51,7 @@ const ProfileHeader = ({
                 {error.lastName ? error.lastName : ''}
               </p>
             </div>
-          </form>
+            </div>
           <ButtonWrapper>
             <Button
               style={{ padding: '.65rem' }}
@@ -64,6 +65,7 @@ const ProfileHeader = ({
               Cancel
             </Button>
           </ButtonWrapper>
+          </form>
         </>
       ) : (
         <>
@@ -91,8 +93,9 @@ const StyledHeader = styled.header`
   margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
-  min-height: 164.375px;
+  min-height: 11rem;
   justify-content: space-between;
+
   h1 {
     margin: 1.35rem 0;
   }
@@ -100,11 +103,14 @@ const StyledHeader = styled.header`
     margin: 1.35rem 0 0 0;
   }
   form {
-    margin: 1rem auto;
+    flex: 1;
+    margin: 1.25rem auto 0 auto;
     display: flex;
     width: 80%;
     max-width: 50rem;
-    justify-content: center;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
   }
   input {
     padding: 5px;
@@ -120,6 +126,10 @@ const StyledHeader = styled.header`
     &:nth-of-type(1) {
       margin-right: 1rem;
     }
+  }
+  .input-container {
+    display: flex;
+    
   }
 `;
 
