@@ -32,5 +32,9 @@
     "vite-plugin-svgr": "^1.0.1",
     "vite-preset-react": "^2.2.0",
     "vite-tsconfig-paths": "^3.4.0"
+  },
+  "engines": {
+    "node": ">=16.13.1",
+    "npm": ">=8.3.0"
   }
 }
