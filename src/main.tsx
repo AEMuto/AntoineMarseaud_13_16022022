@@ -12,6 +12,12 @@ import { useAppDispatch } from './hooks';
 import { setToken } from './store/authSlice';
 import { fetchUserProfile } from './store/authThunks';
 
+/**
+ * Our top level component. We wrap it with the Redux store Provider in the ReactDOM render method
+ * further down. It allows us to use the useAppSelect hook later in ours children components, which
+ * is needed to retrieve the state of our Redux store.
+ * @constructor
+ */
 const App = () => {
   const dispatch = useAppDispatch();
 

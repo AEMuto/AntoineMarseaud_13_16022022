@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from '../theme/colors';
 
+/**
+ * If the user reach for a page that doesn't exist, we display this component,
+ * a simple 404 page that suggests going back to the homepage.
+ * @constructor
+ */
 export const NotFound = () => {
   return (
     <NotFoundContainer>

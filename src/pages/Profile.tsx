@@ -9,6 +9,13 @@ import { updateUserProfile } from '../store/userThunk';
 import { setFirstNameError, setLastNameError } from '../store/authSlice';
 import validateInput from '../utils/validateInput';
 
+/**
+ * The profile page stateful component.
+ * It displays the user's information, specifically its accounts & a form that allows
+ * him to change its first name and last name (see ProfileHeader.tsx).
+ * As for the login page we separate the submission logic and the jsx render/styling.
+ * @constructor
+ */
 export const Profile = () => {
   const { token, error } = useAppSelector((state) => state.auth);
   const {firstName, lastName} = useAppSelector((state) => state.user)

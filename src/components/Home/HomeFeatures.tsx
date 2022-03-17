@@ -10,6 +10,11 @@ type FeatureProp = {
   text: string
 }
 
+/**
+ * Wrapper used to render all the different feature content
+ * @param content
+ * @constructor
+ */
 export const HomeFeatures = ({ content }: FeaturesProp) => {
   return (
     <FeaturesContainer>
@@ -19,6 +24,13 @@ export const HomeFeatures = ({ content }: FeaturesProp) => {
   );
 };
 
+/**
+ * The feature component. Render an image, a title and a paragraph.
+ * @param icon
+ * @param title
+ * @param text
+ * @constructor
+ */
 const Feature = ({ icon, title, text }: FeatureProp) => {
   return (
     <FeatureWrapper>

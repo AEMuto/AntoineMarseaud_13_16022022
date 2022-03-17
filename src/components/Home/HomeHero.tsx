@@ -8,6 +8,13 @@ type HeroProps = {
   text: string
 }
 
+/**
+ * A hero component for the homepage.
+ * @param title
+ * @param subtitles
+ * @param text
+ * @constructor
+ */
 export const HomeHero = ({title, subtitles, text}: HeroProps) => {
   return (
     <HeroContainer>

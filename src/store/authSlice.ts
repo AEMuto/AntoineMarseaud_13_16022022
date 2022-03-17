@@ -34,34 +34,45 @@ const initialState: authState = {
   },
 };
 
+/**
+ * With createSlice we can easily create actions as well as the reducer.
+ * In our case - authSlice - we manage reducers concerning the
+ * authentication process in it (and the error state).
+ * Asynchronous actions such as fetchToken are created in authThunks.ts,
+ * then we handle them as reducer functions in the 'extraReducers' part.
+ */
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout: () => {
+    logout: () => { // No need to create a complex reducer for logout, just returning the initial state is enough
       if (getLSToken()) removeLSToken();
       return initialState;
     },
-    setToken: (state, action: PayloadAction<string>) => {
+    setToken: (state, action: PayloadAction<string>) => { // for storing the token in the state
+      // Used when there is already a token in the local storage (see main.tsx)
       state.token = action.payload;
     },
-    setEmailError: (state, action) => {
+    // A bunch of reducers to handle the error state manually, like in form control.
+    setEmailError: (state, action: PayloadAction<{ email: string }>) => {
       state.error.email = action.payload.email;
     },
-    setPasswordError: (state, action) => {
+    setPasswordError: (state, action: PayloadAction<{ password: string }>) => {
       state.error.password = action.payload.password;
     },
-    setLastNameError: (state, action) => {
+    setLastNameError: (state, action: PayloadAction<{ lastName: string }>) => {
       state.error.lastName = action.payload.lastName;
     },
-    setFirstNameError: (state, action) => {
+    setFirstNameError: (state, action: PayloadAction<{ firstName: string }>) => {
       state.error.firstName = action.payload.firstName;
     },
-    setOtherError: (state, action) => {
+    setOtherError: (state, action: PayloadAction<{ other: string }>) => {
       state.error.other = action.payload.other;
     },
   },
   extraReducers: (builder) => {
+    // For each thunk that we have there is 3 possible state because they return a promise
+    // as follows fulfilled, pending, rejected
     builder.addCase(fetchToken.fulfilled, (state, action) => {
       const { token } = action.payload;
       if (action.payload.storeTokenToLS) setLSToken(token);

@@ -5,6 +5,9 @@ type StyledMainProps = {
   background?: boolean;
 };
 
+/**
+ * A stylized main element that wrap each of our pages.
+ */
 export const StyledMain = styled.main`
   background-color: ${({ background }: StyledMainProps) =>
     background ? colors.background : 'none'};

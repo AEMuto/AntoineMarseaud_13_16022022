@@ -1,9 +1,9 @@
 import { StyledMain } from './container/StyledMain';
 import { HomeHero } from '../components/Home/HomeHero';
 import { HomeFeatures } from '../components/Home/HomeFeatures';
-import chatIcon from '../assets/icon-chat.svg'
-import moneyIcon from '../assets/icon-money.svg'
-import securityIcon from '../assets/icon-security.svg'
+import chatIcon from '../assets/icon-chat.svg';
+import moneyIcon from '../assets/icon-money.svg';
+import securityIcon from '../assets/icon-security.svg';
 
 const heroContent = {
   title: 'Promoted Content',
@@ -29,6 +29,10 @@ const featuresContent = [
   },
 ];
 
+/**
+ * Our homepage. We subdivided it in 2 children component.
+ * @constructor
+ */
 export const Home = () => {
   return (
     <StyledMain>

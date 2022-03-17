@@ -7,6 +7,12 @@ import { setEmailError, setPasswordError } from '../store/authSlice';
 import { fetchUserProfile, fetchToken } from '../store/authThunks';
 import validateInput from '../utils/validateInput';
 
+/**
+ * Our login page. A stateful component that render and control the sign-in form.
+ * The form submission and control is handled here.
+ * The jsx and the styling is done in its child component: LoginForm.tsx
+ * @constructor
+ */
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,16 +23,25 @@ export const Login = () => {
 
   const dispatch = useAppDispatch();
 
-  // There is a token in the store, then we should request the user's info
+  // We need to know if there is a token already in the store.
+  // If that's the case, we should retrieve the user's information.
   useEffect(() => {
     if (!token) return;
     dispatch(fetchUserProfile({ token }));
   }, [token]);
 
+  /**
+   * Network calls are costly we should manage error as much as we can
+   * on the client side. We submit only if the fields are validated by
+   * our validateInput utilitarian function.
+   * @param e
+   */
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const emailValidation = validateInput(email, 'email')
-
+    // We don't validate the password the same way as the email
+    // because current users in the DB doesn't have password
+    // that follow the 2022 security guidelines.
     if (!emailValidation.valid) {
       dispatch(setEmailError({ email: emailValidation.message }));
     }
@@ -40,11 +55,11 @@ export const Login = () => {
     }
   };
 
-  const handleEmail = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleEmail = (e: ChangeEvent<HTMLInputElement>) => { // Refers to the onChange attribute we declare on the input.
     if (error.email) {
-      dispatch(setEmailError({ email: '' }));
+      dispatch(setEmailError({ email: '' })); // We reset the error state when the user begin to type in the field.
     }
-    setEmail(e.target.value);
+    setEmail(e.target.value); // We store the field value in our state.
   };
 
   const handlePassword = (e: ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +69,7 @@ export const Login = () => {
     setPassword(e.target.value);
   };
 
+  // Our state indicate the user is connected, so we redirect him to its profile page.
   if (isConnected) {
     return <Navigate to="/profile" />;
   }

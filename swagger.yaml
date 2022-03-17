@@ -120,7 +120,7 @@ paths:
       tags:
         - User Module
       summary: User Transactions API
-      description: API for fetching the transactions in a user specific account
+      description: API for fetching the transactions during the current month in a user specific account
       parameters:
         - in: header
           name: Authorization
@@ -141,7 +141,42 @@ paths:
         - application/json
       responses:
         '200':
-          description: User's Account transactions retrieved successully
+          description: User's Account transactions for the current month retrieved successully
+          schema:
+            $ref: '#/definitions/TransactionResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/transaction?account_id=value&transaction_id=value:
+    get:
+      security:
+        - Bearer: [ ]
+      tags:
+        - User Module
+      summary: User Transactions API
+      description: API for fetching a unique transaction in a user specific account
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          type: string
+          required: true
+        - in: query
+          name: account_id
+          required: true
+          type: string
+          description: The Account's ID
+        - in: query
+          name: transaction_id
+          required: true
+          type: string
+          description: The Transaction's ID
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User's Account unique transaction retrieved successully
           schema:
             $ref: '#/definitions/TransactionResponse'
         '400':

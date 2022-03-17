@@ -20,6 +20,13 @@ export type customError = {
   rejectValue: errorState;
 };
 
+/**
+ * Thunk for retrieving the token from the api.
+ * The payload correspond to the object sent by
+ * the useDispatch hook inside the handleSubmit
+ * of the page component Login.tsx
+ * rejectWithValue allow us to customize our error (Promise.rejected)
+ */
 export const fetchToken = createAsyncThunk<
   loginReturnValues,
   loginPayload,
@@ -49,6 +56,9 @@ export const fetchToken = createAsyncThunk<
   }
 });
 
+/**
+ * Same logic as above
+ */
 export const fetchUserProfile = createAsyncThunk<
   userState,
   { token: string },
