@@ -72,10 +72,10 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     // For each thunk that we have there is 3 possible state because they return a promise
-    // as follows fulfilled, pending, rejected
+    // as follows: fulfilled, pending, rejected
     builder.addCase(fetchToken.fulfilled, (state, action) => {
       const { token } = action.payload;
-      if (action.payload.storeTokenToLS) setLSToken(token);
+      if (action.payload.storeTokenToLS) setLSToken(token); // storeTokenToLS is true then we store it in the Local Storage
       state.token = token;
       state.isLoading = false;
     });

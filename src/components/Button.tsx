@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { colors } from '../theme/colors';
 
@@ -9,6 +9,14 @@ type ButtonProps = {
   type?: 'submit' | 'reset';
 };
 
+/**
+ * A custom button component.
+ * @param children
+ * @param style
+ * @param onClick
+ * @param type
+ * @constructor
+ */
 const Button: React.FC<ButtonProps> = ({ children, style, onClick, type }) => {
   return (
     <StyledButton style={style} onClick={onClick} type={type}>

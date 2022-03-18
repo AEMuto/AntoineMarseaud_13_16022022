@@ -18,6 +18,11 @@ const initialState: userState = {
   lastName: '',
 };
 
+/**
+ * Slice that handle all things concerning the user's information.
+ * It should contain the future user's accounts data we'll create in
+ * the next iteration. Currently, we use the mock/mockAccounts.ts
+ */
 export const userSlice = createSlice({
   name: 'user',
   initialState,

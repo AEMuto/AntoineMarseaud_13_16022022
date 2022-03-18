@@ -12,7 +12,7 @@ import validateInput from '../utils/validateInput';
 /**
  * The profile page stateful component.
  * It displays the user's information, specifically its accounts & a form that allows
- * him to change its first name and last name (see ProfileHeader.tsx).
+ * him/her to change its first name and last name (see ProfileHeader.tsx).
  * As for the login page we separate the submission logic and the jsx render/styling.
  * @constructor
  */

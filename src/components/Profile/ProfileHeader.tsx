@@ -14,6 +14,17 @@ type ProfileHeaderProps = {
   error: errorState;
 };
 
+/**
+ * Component that render either the user's first name & last name or
+ * a form to change them depending on the state of its parent (Profil.tsx)
+ * @param isEditing
+ * @param toggleEditing
+ * @param handleSubmit
+ * @param handleFirstName
+ * @param handleLastName
+ * @param error
+ * @constructor
+ */
 const ProfileHeader = ({
   isEditing,
   toggleEditing,

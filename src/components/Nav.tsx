@@ -13,6 +13,10 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { logout } from '../store/authSlice';
 import { useState } from 'react';
 
+/**
+ * Our Nav component. Its appearance is different whether the user is connected or not.
+ * @constructor
+ */
 export const Nav = () => {
   const { isConnected } = useAppSelector((state) => state.auth);
   const { firstName } = useAppSelector((state) => state.user);
@@ -27,11 +31,12 @@ export const Nav = () => {
       {isConnected ? (
         <>
           <FontAwesomeIcon
-            icon={linksVisible ? faX : faBars}
+            icon={linksVisible ? faX : faBars} // Changing the menu icon
             size="lg"
-            onClick={() => toggleLinks(!linksVisible)}
+            onClick={() => toggleLinks(!linksVisible)} // On a click we toggle the links' container visibility
             className="menu-icon"
           />
+          {/* We handle the links' visibility with a class which change its opacity */}
           <div className={linksVisible ? 'linksContainer visible' : 'linksContainer'}>
             <Link to='/profile'>
               <FontAwesomeIcon icon={faCircleUser} />

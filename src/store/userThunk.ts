@@ -8,6 +8,9 @@ type updateUserProfilePayload = userProfile & {
   token: string;
 };
 
+/**
+ * Thunk handling the modification of a user first name & last name.
+ */
 export const updateUserProfile = createAsyncThunk<
   userProfile, // Return values
   updateUserProfilePayload,

@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { colors } from '../theme/colors';
 
+/**
+ * Our Footer component.
+ * @constructor
+ */
 export const Footer = () => {
   return (
     <StyledFooter>

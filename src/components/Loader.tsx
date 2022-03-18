@@ -9,6 +9,12 @@ type loaderProps = {
   size?: sizeProp;
 };
 
+/**
+ * A component that render a loading spinner. It can have a color and a size prop
+ * which make it easy to change its basic styling.
+ * @param prop
+ * @constructor
+ */
 function Loader(prop: loaderProps) {
   const { color, size } = prop;
   return (

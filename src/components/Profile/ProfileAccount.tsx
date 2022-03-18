@@ -10,6 +10,13 @@ type AccountData = {
   };
 };
 
+/**
+ * Our component for rendering the user's accounts information.
+ * Also contains the buttons on each account which will be the ui elements
+ * that display the transactions on a click.
+ * @param data
+ * @constructor
+ */
 const ProfileAccount = ({ data }: AccountData) => {
   const { title, amount, description } = data;
   return (
