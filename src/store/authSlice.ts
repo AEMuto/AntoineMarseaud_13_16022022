@@ -5,7 +5,6 @@ import getLSToken from '../utils/getLSToken';
 import removeLSToken from '../utils/removeLSToken';
 import { updateUserProfile } from './userThunk';
 
-
 export type errorState = {
   email?: string;
   password?: string;
@@ -87,6 +86,7 @@ export const authSlice = createSlice({
       if (action.payload) state.error = action.payload;
       state.isLoading = false;
     });
+
     builder.addCase(fetchUserProfile.fulfilled, (state) => {
       state.isConnected = true;
       state.isLoading = false;
@@ -98,6 +98,7 @@ export const authSlice = createSlice({
       if (action.payload) state.error = action.payload;
       state.isLoading = false;
     });
+
     builder.addCase(updateUserProfile.pending, (state) => {
       state.isLoading = true;
     });

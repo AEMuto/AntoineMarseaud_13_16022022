@@ -70,7 +70,9 @@ export const GlobalStyles = createGlobalStyle`
   .error-message {
     color: red;
     height: 0.5rem;
+    max-width: 253px;
     margin: 0.5rem 0;
+    font-size: .8rem;
   }
 
   input.error {

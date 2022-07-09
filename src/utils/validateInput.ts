@@ -35,11 +35,14 @@ function validateInput(input: string, type: typeParam): returnValue {
       return { valid: true, message: 'Correct name' };
     case 'password':
       if (!input.match(passwordRegexp)) {
-        return { valid: false, message: 'Invalid password' };
+        return {
+          valid: false,
+          message: 'Password should have a length between 8 to 16, and contains at least one lowercase, character one uppercase character, one special character, one number',
+        };
       }
       return { valid: true, message: 'Correct password' };
     default:
-      throw new Error(`Invalid 'type' parameter provided`)
+      throw new Error(`Invalid 'type' parameter provided`);
   }
 
 }

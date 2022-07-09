@@ -1,15 +1,16 @@
-import React, { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from 'react';
-import styled from 'styled-components';
-import { faCircleUser, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { colors } from '../../theme/colors';
-import Loader from '../Loader';
-import { errorState } from '../../store/authSlice';
 import { loginPayload } from '../../store/authThunks';
+import React, { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from 'react';
+import { errorState } from '../../store/authSlice';
+import styled from 'styled-components';
+import { colors } from '../../theme/colors';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleUser, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import Loader from '../Loader';
 
-export type loginFormProps = loginPayload & {
-  toggleChecked: Dispatch<SetStateAction<boolean>>;
+export type registerFormProps = {
+  email: string;
+  password: string;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   handleEmail: (e: ChangeEvent<HTMLInputElement>) => void;
   handlePassword: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -17,50 +18,28 @@ export type loginFormProps = loginPayload & {
   isLoading: boolean
 };
 
-/**
- * The LoginForm component. It's main purpose is to render the jsx and stylize it.
- * The submission logic is handled by its parent, the Login page.
- * It's a way to apply the Separation of Concerns principle.
- * Maybe it's not that much efficient, but I find it easier to look
- * just at the Login page when there is a login problem.
- * @param email
- * @param password
- * @param isChecked
- * @param handleEmail
- * @param handlePassword
- * @param toggleChecked
- * @param handleSubmit
- * @param error
- * @param isLoading
- * @constructor
- */
-export const LoginForm = ({
+export const RegisterForm = ({
   email,
   password,
-  isChecked,
   handleEmail,
   handlePassword,
-  toggleChecked,
   handleSubmit,
   error,
   isLoading,
-}: loginFormProps) => {
-  // We have delegated most of the logic of this component to its parent
-  // but for the case of toggling the password visibility we handle it
-  // there, as it has no effect on the submission.
+}: registerFormProps) => {
   const [passwordVisible, togglePassword] = useState(false);
   return (
-    <SignInContainer>
+    <SignUpContainer>
       <FontAwesomeIcon icon={faCircleUser} size='2x' />
 
-      <h1>Sign In</h1>
+      <h1>Sign Up</h1>
 
       <form onSubmit={handleSubmit} autoComplete='off'>
         <div className='input-wrapper'>
-          <label htmlFor='username'>Username</label>
+          <label htmlFor='email'>Email</label>
           <input
             type='text'
-            id='username'
+            id='email'
             className={error?.email ? 'error' : ''} // Change the border to red if there is an error
             value={email}
             onChange={handleEmail}
@@ -90,32 +69,24 @@ export const LoginForm = ({
           </p>
         </div>
 
-        <div className='input-remember'>
-          <input
-            type='checkbox'
-            id='remember-me'
-            checked={isChecked}
-            onChange={(e) => toggleChecked(e.target.checked)}
-          />
-          <label htmlFor='remember-me'>Remember me</label>
-        </div>
-        <p className="register">Doesn't have an account? <StyledLink to="/register">Register</StyledLink></p>
-        <button className='sign-in-button' type='submit'>
-          {isLoading ? <Loader color='white' size='21px' /> : 'Sign In'}
+        <p className='login'>Already have an account? <StyledLink to='/register'>Login</StyledLink></p>
+        <button className='sign-up-button' type='submit'>
+          {isLoading ? <Loader color='white' size='21px' /> : 'Sign Up'}
         </button>
       </form>
-    </SignInContainer>
+    </SignUpContainer>
   );
 };
 
 const StyledLink = styled(Link)`
   color: ${colors.primary};
+
   &:hover {
     color: ${colors.secondary};
   }
-`
+`;
 
-const SignInContainer = styled.section`
+const SignUpContainer = styled.section`
   background-color: ${colors.white};
   margin: auto;
   padding: 2rem;
@@ -125,15 +96,6 @@ const SignInContainer = styled.section`
   h1 {
     font-size: 1.5rem;
     margin: 1.4rem 0 1.6rem 0;
-  }
-
-  .input-remember {
-    display: flex;
-    align-items: center;
-  }
-
-  .input-remember label {
-    margin-left: 0.25rem;
   }
 
   .input-wrapper {
@@ -164,12 +126,13 @@ const SignInContainer = styled.section`
     align-items: center;
     justify-content: center;
   }
-  
-  .register {
-    margin-top: 1rem;
+
+  .login {
+    margin-top: 3.5rem;
+    text-align: left;
   }
 
-  .sign-in-button {
+  .sign-up-button {
     display: block;
     width: 100%;
     padding: 8px;

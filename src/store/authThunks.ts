@@ -35,11 +35,11 @@ export const fetchToken = createAsyncThunk<
   try {
     const { email, password } = payload; // We destructure the email and password from the payload
     // Then we use it to construct the data object we send to the api route 'login'
-    // Note: payload also contains the key 'storeTokenToLS' which is a boolean
+    // Note: payload also contains the key 'isChecked' which is a boolean
     // informing us whether we should store the token in local storage or not.
     const response = await api.post('login', { email, password });
     await wait(250)
-    // There we check the value of 'storeTokenToLS' and conditionally return an object
+    // There we check the value of 'isChecked' and conditionally return an object
     // that we will handle in our reducer in authSlice.ts
     if (payload.isChecked) {
       return { token: response.data.body.token, storeTokenToLS: true };
