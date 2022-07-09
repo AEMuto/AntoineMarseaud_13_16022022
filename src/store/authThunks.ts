@@ -20,6 +20,44 @@ export type customError = {
   rejectValue: errorState;
 };
 
+type registerPayload = {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
+type registerReturnValues = {
+  message: string;
+}
+
+export const registerUser = createAsyncThunk<
+  registerReturnValues,
+  registerPayload,
+  customError
+  >('auth/register', async (payload, { rejectWithValue }) => {
+  try {
+    const { email, password, firstName, lastName } = payload;
+    const response = await api.post('signup', { email, password, firstName, lastName });
+    return response.data.message;
+  } catch (err) {
+    const error = err as AxiosError;
+
+    if (!error.response) {
+      return rejectWithValue({
+        other: 'Something went wrong',
+      });
+    }
+
+    if (error.response.data.message.includes('Email already exists')) {
+      return rejectWithValue({
+        email: 'Email already in use',
+      });
+    }
+
+  }
+});
+
 /**
  * Thunk for retrieving the token from the api.
  * The payload correspond to the object sent by
@@ -31,14 +69,14 @@ export const fetchToken = createAsyncThunk<
   loginReturnValues,
   loginPayload,
   customError
->('auth/login', async (payload, { rejectWithValue }) => {
+  >('auth/login', async (payload, { rejectWithValue }) => {
   try {
     const { email, password } = payload; // We destructure the email and password from the payload
     // Then we use it to construct the data object we send to the api route 'login'
     // Note: payload also contains the key 'isChecked' which is a boolean
     // informing us whether we should store the token in local storage or not.
     const response = await api.post('login', { email, password });
-    await wait(250)
+    await wait(250);
     // There we check the value of 'isChecked' and conditionally return an object
     // that we will handle in our reducer in authSlice.ts
     if (payload.isChecked) {
@@ -66,13 +104,11 @@ export const fetchToken = createAsyncThunk<
  * The main difference is the construction of the params we passed in
  * to the post method of our api.
  */
-export const fetchUserProfile = createAsyncThunk<
-  userState,
+export const fetchUserProfile = createAsyncThunk<userState,
   { token: string },
-  customError
->('auth/fetchUserProfile', async ({ token }, { rejectWithValue }) => {
+  customError>('auth/fetchUserProfile', async ({ token }, { rejectWithValue }) => {
   try {
-    const response = await api.post('profile', null,{
+    const response = await api.post('profile', null, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const { email, firstName, lastName } = response.data.body;

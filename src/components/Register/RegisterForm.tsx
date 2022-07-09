@@ -11,8 +11,12 @@ import Loader from '../Loader';
 export type registerFormProps = {
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   handleEmail: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleFirstName: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleLastName: (e: ChangeEvent<HTMLInputElement>) => void;
   handlePassword: (e: ChangeEvent<HTMLInputElement>) => void;
   error: errorState;
   isLoading: boolean
@@ -20,8 +24,12 @@ export type registerFormProps = {
 
 export const RegisterForm = ({
   email,
+  firstName,
+  lastName,
   password,
   handleEmail,
+  handleFirstName,
+  handleLastName,
   handlePassword,
   handleSubmit,
   error,
@@ -35,6 +43,33 @@ export const RegisterForm = ({
       <h1>Sign Up</h1>
 
       <form onSubmit={handleSubmit} autoComplete='off'>
+        {/* Firstname */}
+        <div className='input-wrapper'>
+          <label htmlFor='firstname'>First Name</label>
+          <input
+            type='text'
+            id='firstname'
+            className={error?.firstName ? 'error' : ''} // Change the border to red if there is an error
+            value={firstName}
+            onChange={handleFirstName}
+          />
+          {/* Conditionally render the error message */}
+          <p className='error-message'>{error?.firstName ? error?.firstName : ''}</p>
+        </div>
+        {/* Lastname */}
+        <div className='input-wrapper'>
+          <label htmlFor='lastname'>Last Name</label>
+          <input
+            type='text'
+            id='lastname'
+            className={error?.lastName ? 'error' : ''} // Change the border to red if there is an error
+            value={lastName}
+            onChange={handleLastName}
+          />
+          {/* Conditionally render the error message */}
+          <p className='error-message'>{error?.lastName ? error?.lastName : ''}</p>
+        </div>
+        {/* Email */}
         <div className='input-wrapper'>
           <label htmlFor='email'>Email</label>
           <input
@@ -47,7 +82,7 @@ export const RegisterForm = ({
           {/* Conditionally render the error message */}
           <p className='error-message'>{error?.email ? error?.email : ''}</p>
         </div>
-
+        {/* Password */}
         <div className='input-wrapper'>
           <label htmlFor='password'>Password</label>
           <input
