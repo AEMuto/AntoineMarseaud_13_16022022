@@ -11,6 +11,7 @@ import getLSToken from './utils/getLSToken';
 import { useAppDispatch } from './hooks';
 import { setToken } from './store/authSlice';
 import { fetchUserProfile } from './store/authThunks';
+import RepoLink from './components/RepoLink';
 
 /**
  * Our top level component. We wrap it with the Redux store Provider in the ReactDOM render method
@@ -51,7 +52,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
+      <RepoLink />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'),
 );
+
