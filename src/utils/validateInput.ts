@@ -5,7 +5,7 @@ type returnValue = {
 }
 
 const invalidCharacter = new RegExp('[^\\p{Alphabetic}]', 'u');
-const passwordRegexp = new RegExp('^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d\\s:])([^\\s]){8,16}$\n', 'gm');
+const passwordRegexp = new RegExp('^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d\\s:])([^\\s]){8,16}$', 'gm');
 const emailRegexp = new RegExp('^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$', 'i');
 
 /**

@@ -5,9 +5,10 @@ import { Navigate } from 'react-router-dom';
 import validateInput from '../utils/validateInput';
 import { setEmailError, setFirstNameError, setLastNameError, setPasswordError } from '../store/authSlice';
 import { RegisterForm } from '../components/Register/RegisterForm';
+import { registerUser } from '../store/authThunks';
 
 export const Register = () => {
-  const { isConnected, isLoading, error } = useAppSelector((state) => state.auth);
+  const { isConnected, isLoading, error, registerSuccess } = useAppSelector((state) => state.auth);
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -44,7 +45,7 @@ export const Register = () => {
       firstNameValidation.valid &&
       lastNameValidation.valid
     ) {
-      console.log('submitting: create user');
+      dispatch(registerUser({ email, password, firstName, lastName }));
     }
   };
 
@@ -94,6 +95,7 @@ export const Register = () => {
         handleSubmit={handleSubmit}
         error={error}
         isLoading={isLoading}
+        registerSuccess={registerSuccess}
       />
     </StyledMain>
   );

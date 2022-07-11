@@ -1,12 +1,12 @@
-import { loginPayload } from '../../store/authThunks';
-import React, { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from 'react';
-import { errorState } from '../../store/authSlice';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { errorState, resetRegisterSuccess } from '../../store/authSlice';
 import styled from 'styled-components';
 import { colors } from '../../theme/colors';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Loader from '../Loader';
+import { useAppDispatch } from '../../hooks';
 
 export type registerFormProps = {
   email: string;
@@ -19,7 +19,8 @@ export type registerFormProps = {
   handleLastName: (e: ChangeEvent<HTMLInputElement>) => void;
   handlePassword: (e: ChangeEvent<HTMLInputElement>) => void;
   error: errorState;
-  isLoading: boolean
+  isLoading: boolean;
+  registerSuccess: boolean;
 };
 
 export const RegisterForm = ({
@@ -34,10 +35,18 @@ export const RegisterForm = ({
   handleSubmit,
   error,
   isLoading,
+  registerSuccess,
 }: registerFormProps) => {
   const [passwordVisible, togglePassword] = useState(false);
+  const dispatch = useAppDispatch();
+
   return (
     <SignUpContainer>
+      <div className={registerSuccess?'successModal show':'successModal'}>
+        <h1>Success!</h1>
+        <p className="successModal__message">You have successfully registered!</p>
+        <StyledLink to='/login' onClick={() => dispatch(resetRegisterSuccess())}>Continue</StyledLink>
+      </div>
       <FontAwesomeIcon icon={faCircleUser} size='2x' />
 
       <h1>Sign Up</h1>
@@ -104,7 +113,7 @@ export const RegisterForm = ({
           </p>
         </div>
 
-        <p className='login'>Already have an account? <StyledLink to='/register'>Login</StyledLink></p>
+        <p className='login'>Already have an account? <StyledLink to='/login'>Login</StyledLink></p>
         <button className='sign-up-button' type='submit'>
           {isLoading ? <Loader color='white' size='21px' /> : 'Sign Up'}
         </button>
@@ -127,7 +136,31 @@ const SignUpContainer = styled.section`
   padding: 2rem;
   min-width: 300px;
   text-align: center;
-
+  position: relative;
+  overflow: hidden;
+  
+  .successModal {
+    position: absolute;
+    inset: 0;
+    background-color: ${colors.white};
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transform: translateY(9999px);
+    transition: all 1.5s ease-in-out;
+    &__message {
+      margin-bottom: 1rem;
+    }
+    &.show {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+  
   h1 {
     font-size: 1.5rem;
     margin: 1.4rem 0 1.6rem 0;

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchUserProfile, fetchToken } from './authThunks';
+import { fetchUserProfile, fetchToken, registerUser } from './authThunks';
 import setLSToken from '../utils/setLSToken';
 import getLSToken from '../utils/getLSToken';
 import removeLSToken from '../utils/removeLSToken';
@@ -18,11 +18,15 @@ export type authState = {
   isConnected: boolean;
   token: string;
   error: errorState;
+  registerSuccess: boolean;
+  apiMessage: string;
 };
 
 const initialState: authState = {
   isLoading: false,
   isConnected: false,
+  registerSuccess: false,
+  apiMessage: '',
   token: '',
   error: {
     email: '',
@@ -44,6 +48,10 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    resetRegisterSuccess: (state) => {
+      state.registerSuccess = false;
+      state.apiMessage = '';
+    },
     logout: () => { // No need to create a complex reducer for logout, just returning the initial state is enough
       if (getLSToken()) removeLSToken();
       return initialState;
@@ -72,6 +80,20 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     // For each thunk that we have there is 3 possible state because they return a promise
     // as follows: fulfilled, pending, rejected
+    /* register Thunk */
+    builder.addCase(registerUser.fulfilled, (state, action) => {
+      state.apiMessage = action.payload.message;
+      state.registerSuccess = true;
+      state.isLoading = false;
+    });
+    builder.addCase(registerUser.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(registerUser.rejected, (state, action) => {
+      if (action.payload) state.error = action.payload;
+      state.isLoading = false;
+    });
+    /* login Thunk */
     builder.addCase(fetchToken.fulfilled, (state, action) => {
       const { token } = action.payload;
       if (action.payload.storeTokenToLS) setLSToken(token); // storeTokenToLS is true then we store it in the Local Storage
@@ -86,7 +108,7 @@ export const authSlice = createSlice({
       if (action.payload) state.error = action.payload;
       state.isLoading = false;
     });
-
+    /* fetchUserProfile Thunk */
     builder.addCase(fetchUserProfile.fulfilled, (state) => {
       state.isConnected = true;
       state.isLoading = false;
@@ -98,7 +120,7 @@ export const authSlice = createSlice({
       if (action.payload) state.error = action.payload;
       state.isLoading = false;
     });
-
+    /* updateUserProfile Thunk, loading state is handled there */
     builder.addCase(updateUserProfile.pending, (state) => {
       state.isLoading = true;
     });
@@ -119,5 +141,6 @@ export const {
   setPasswordError,
   setFirstNameError,
   setLastNameError,
+  resetRegisterSuccess,
   setOtherError,
 } = authSlice.actions;
