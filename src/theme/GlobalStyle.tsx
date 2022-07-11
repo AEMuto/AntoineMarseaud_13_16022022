@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import { colors } from './colors';
 
 export const GlobalStyles = createGlobalStyle`
   :root {
@@ -42,6 +41,10 @@ export const GlobalStyles = createGlobalStyle`
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    & > *:not(.repoLink) {
+      width: 100%;
+    }
   }
   
   input {

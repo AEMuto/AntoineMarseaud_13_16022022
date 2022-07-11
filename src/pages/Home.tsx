@@ -35,7 +35,7 @@ const featuresContent = [
  */
 export const Home = () => {
   return (
-    <StyledMain>
+    <StyledMain maxWidth={true}>
       <HomeHero {...heroContent} />
       <HomeFeatures content={featuresContent} />
     </StyledMain>
