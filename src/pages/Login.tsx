@@ -10,12 +10,12 @@ import validateInput from '../utils/validateInput';
 /**
  * Our login page. A stateful component that render and control the sign-in form.
  * The form submission and control is handled here.
- * The jsx and the styling is done in its child component: LoginForm.tsx
+ * The jsx and the styling are done in its child component: LoginForm.tsx
  * @constructor
  */
 export const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('tony@stark.com');
+  const [password, setPassword] = useState('password123');
   const [isChecked, toggleChecked] = useState(false);
   const { isLoading, isConnected, token, error } = useAppSelector(
     (state) => state.auth,
